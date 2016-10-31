@@ -19,5 +19,5 @@ from ignitionSite.views import test
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^testme/(\S+)/$', test),
+    url(r'^testme/(\S*)$', test),
 ]
