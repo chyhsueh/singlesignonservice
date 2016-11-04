@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Login as {{userId}} ...</title>
+</head>
+<body bgcolor="red">
+<!--
+dic = {'returnCode' : -1, 'returnState' : 'LoginFailed', 'userId' : myusername, 'errLog' : value, 'errorType' : type} 
+ -->
+ <center>
+ <h1>Login FALED as : {{userId}}:</h1><br />
+ <hr width="80%" />
+ <table bgcolor="yellow" width="80%">
+ <tr><td>
+ <ul>
+ <li><b>UserID:</b> {{userId}}</li>
+ <li><b>Type of ERROR:</b> {{errorType}}</li>
+ <li><b>ERROR TraceLog:</b> <pre>{{errLog}}</pre></li>
+ </ul>
+ </td></tr>
+ </table>
+ <hr width="80%" />
+ <a href="/welcome" >Come back to login page.</a>
+ </center>
+<!-- 
+Password: {{mypassword}}.<br />
+我的信箱是：{{myEMAIL}} <br />真帥！<br />
+Now I will connect to: {{mystring}} ...... <br />
+ -->
+</body>
+</html>

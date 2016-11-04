@@ -1,0 +1,11 @@
+pid =
+cert = /home/ignitionSite/ignitionSite/stunnel4.conf/ignitiondlsso.pem
+sslVersion = all
+debug = 7
+foreground = yes
+
+[https]
+accept = 9443
+connect = 8000
+TIMEOUTclose=1
+

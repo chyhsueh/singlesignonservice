@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from ignitionSite.views import test
+from ignitionSite.views import handleEntry
+from ignitionSite.views import handleWelcome 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^testme/(\S*)$', test),
+    url(r'^entry/(\S*)$', handleEntry),
+    url(r'^welcome/', handleWelcome)
 ]

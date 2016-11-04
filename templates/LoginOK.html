@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Login as {{userId}} ...</title>
+</head>
+<body bgcolor="green">
+<!--
+dic = {'returnCode' : 0, 'returnState' : 'Success', 'userId' : token['userId'], 'givenName' : token['givenName'], 'familyName' : token['familyName']} 
+ -->
+ <center>
+ <h1>Login Success to : {{userId}}:</h1><br />
+ <hr width="80%" />
+ <table bgcolor="yellow" width="80%">
+ <tr><td>
+ <ul>
+ <li><b>UserID:</b> {{userId}}</li>
+ <li><b>LastName:</b> {{givenName}}</li>
+ <li><b>FamilyName:</b> {{familyName}}</li>
+ </ul>
+ </td></tr>
+ </table>
+ <hr width="80%" />
+ <a href="/welcome" >Come back to login page.</a>
+ </center>
+<!-- 
+Password: {{mypassword}}.<br />
+我的信箱是：{{myEMAIL}} <br />真帥！<br />
+Now I will connect to: {{mystring}} ...... <br />
+ -->
+</body>
+</html>

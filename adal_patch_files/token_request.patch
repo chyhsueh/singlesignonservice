@@ -1,0 +1,72 @@
+--- token_request.orig	2016-11-03 15:00:02.549192077 +0800
++++ token_request.py	2016-11-03 15:39:12.820641418 +0800
+@@ -177,6 +177,20 @@
+ 
+         return self._oauth_get_token(oauth_parameters)
+ 
++    #
++    #   Added by Charles.Hsueh - Support authentication with username + password + application secret.
++    #
++    def _get_token_username_password_managed(self, username, password, client_secret):
++        self._log.debug('Acquiring token with username password for managed user')
++
++        oauth_parameters = self._create_oauth_parameters(OAUTH2_GRANT_TYPE.PASSWORD)
++
++        oauth_parameters[OAUTH2_PARAMETERS.PASSWORD] = password
++        oauth_parameters[OAUTH2_PARAMETERS.USERNAME] = username
++        oauth_parameters[OAUTH2_PARAMETERS.CLIENT_SECRET] = client_secret
++
++        return self._oauth_get_token(oauth_parameters)
++
+     def _perform_wstrust_assertion_oauth_exchange(self, wstrust_response):
+         self._log.debug("Performing OAuth assertion grant type exchange.")
+ 
+@@ -286,6 +300,48 @@
+                     token = self._get_token_username_password_federated(username, password)
+                 else:
+                     raise AdalError(
++                        "Server returned an unknown AccountType: {}".format(self._user_realm.account_type))
++                self._log.debug("Successfully retrieved token from authority.")
++            except Exception:
++                self._log.info("get_token_func returned with error")
++                raise
++        else:
++            self._log.info('Skipping user realm discovery for ADFS authority')
++            token = self._get_token_username_password_managed(username, password)
++       
++        self._cache_driver.add(token)
++        return token
++
++    #
++    #   Added by Charles.Hsueh - Support authentication with username + password + application secret. (2016.11.02)
++    #
++    def get_token_with_username_password(self, username, password, client_secrets):
++        self._log.info("Acquiring token with username password.")
++        self._user_id = username
++        try:
++            token = self._find_token_from_cache()
++            if token:
++                return token
++        except AdalError as exp:
++            self._log.warn(
++                'Attempt to look for token in cache resulted in Error: %s', 
++                exp,
++                log_stack_trace=True)
++ 
++        if not self._authentication_context.authority.is_adfs_authority:
++            self._user_realm = self._create_user_realm_request(username)
++            self._user_realm.discover()
++
++            try:
++                if self._user_realm.account_type == ACCOUNT_TYPE['Managed']:
++                    token = self._get_token_username_password_managed(username, password, client_secrets)
++                elif self._user_realm.account_type == ACCOUNT_TYPE['Federated']:
++		    #
++		    #   Comment by Charles.Hsueh - I am not sure the functions of "federated account". So I do not add the client_secret support now. (2016.11.02)
++		    #
++                    token = self._get_token_username_password_federated(username, password)
++                else:
++                    raise AdalError(
+                         "Server returned an unknown AccountType: {}".format(self._user_realm.account_type))
+                 self._log.debug("Successfully retrieved token from authority.")
+             except Exception:
